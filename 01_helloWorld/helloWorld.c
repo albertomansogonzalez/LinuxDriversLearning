@@ -5,17 +5,17 @@
 * y al ser descargado (insmod, rmmod)
 */
 
-#include <linux/kernel.h>
-#include <linux/init.h>
-#include <linux/module.h>
+#include <linux/kernel.h>	//funciones del kernel como printk()
+#include <linux/module.h>	//para macros como MODULE_LICENSE()
+#include <linux/init.h>		//para module_init() o module_exit()
 
-int my_init (void)
+static int my_init (void)
 {
 	printk("Welcome to my driver!\n"); //escribir en el log del kernel
 	return 0;
 }
 
-void  my_exit (void)
+static void  my_exit (void)
 {
 	printk("Leaving my driver!\n");
 }

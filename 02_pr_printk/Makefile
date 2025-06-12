@@ -1,4 +1,4 @@
-obj-m += helloWorld.o   #poner nombre del fichero
+obj-m += pr_printk.o   #poner nombre del fichero
 
 KDIR = /lib/modules/$(shell uname -r)/build
 
