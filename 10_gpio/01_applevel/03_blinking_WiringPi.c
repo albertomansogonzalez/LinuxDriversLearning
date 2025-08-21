@@ -1,6 +1,8 @@
 /*
  Programa que parpadea el pin 36 (GPIO16) en la raspberry pi 4. (conectar led externo con resistencia)
  A nivel de aplicacion, utilizando libreria Wiring Pi(descargada de github)(obsoleta)
+
+ Compilar con: ´gcc 03_blinking_WiringPi.c -l wiringPi`
 */
 
 #include <wiringPi.h> // header de la biblioteca
