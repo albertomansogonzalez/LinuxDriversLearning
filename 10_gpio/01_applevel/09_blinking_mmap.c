@@ -52,6 +52,11 @@ int main(){
 
 	gpio[10] = (1 << 16); // desactiva el GPIO16
 
+	if (munmap((void*)gpio, BLOCK_SIZE) < 0){
+		perror("Error in munmap\n");
+		return -1;
+	}
+
 	return 0;
 
 }
