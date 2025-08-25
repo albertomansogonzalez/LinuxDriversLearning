@@ -1,9 +1,11 @@
 /*
  Programa que parpadea el pin 36 (GPIO16) en la raspberry pi 4. (conectar led externo con resistencia)
- A nivel de aplicacion, utilizando fichero de dispositivo /dev/gpiomem que proporciona driver para acceso directo a memoria.
- Ademas, /dev/gpiomem accede solo y directamente a la zona de memoria donde esta el GPIO, a diferencia de /dev/mem.
+ A nivel de aplicacion, utilizando fichero de dispositivo /dev/mem que proporciona driver para acceso directo a memoria.
+ Ademas, /dev/mem accede a toda la memoria, no solo a la zona GPIO cono /dev/gpiomem
 
  Con la llamada al sistema `mmap()` se mapean las direcciones fisicas de los registros GPIO a zonas de memoria de nuestro proceso.
+
+ Ejecutar con sudo!
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -12,6 +14,10 @@
 #include <unistd.h>
 #include <stdint.h>
 
+// direcion donde se mapea GPIO
+// aunque en el Device Tree ponga 7e200000, realmente luego se accede mediante el bus del SoC
+// que a su vez mapea a la direccion 0xFE200000
+#define GPIO_BASE 0xFE200000
 #define BLOCK_SIZE 4096
 
 int main(){
@@ -19,12 +25,12 @@ int main(){
 	void *gpio_map; // direccion en usuario, del area mapeada
 	volatile unsigned *gpio; // volatile porque el registro puede cambiar de forma externa
 
-	if((fd = open("/dev/gpiomem", O_RDWR|O_SYNC)) < 0){
+	if((fd = open("/dev/mem", O_RDWR|O_SYNC)) < 0){
 		perror("Error en open()\n");
 		return -1;
 	}
 
-	gpio_map = mmap(NULL, BLOCK_SIZE, PROT_READ|PROT_WRITE, MAP_SHARED, fd, 0);
+	gpio_map = mmap(NULL, BLOCK_SIZE, PROT_READ|PROT_WRITE, MAP_SHARED, fd, GPIO_BASE);
 	close(fd);
 
 	if(gpio_map == MAP_FAILED){
