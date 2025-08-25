@@ -13,6 +13,7 @@
 #include <linux/module.h>
 #include <linux/init.h>
 #include <linux/fs.h>
+#include <linux/uaccess.h> // para copy_to_user()
 
 /* Datos para registrar el dispositivo*/
 #define DEVICE_NAME "mi_dispositivo"
