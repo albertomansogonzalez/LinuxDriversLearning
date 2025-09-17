@@ -1,0 +1,16 @@
+/dts-v1/;	//indica version 1
+/plugin/;	//indica que es un overlay
+/ {
+	compatible = "brcm, bcm2835";
+	fragment@0 {
+		target-path = "/";	//apunta al nodo raiz
+		__overlay__ {
+			my_device {		//representa nuestro dispositivo
+				compatible = "brightlight,mydev";
+				status = "okay";
+				label = "Test";
+				my_value = <12>;
+				};
+		};
+	};
+};
